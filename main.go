@@ -4,20 +4,22 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"github.com/gossie/aoc-generator/config"
 )
 
 func main() {
 	command := os.Args[1]
 	switch command {
-	case "create":
-		if len(os.Args) == 3 {
-			createDirectory(os.Args[2])
+	case "init":
+		if len(os.Args) == 4 {
+			initializeYear(os.Args[2], os.Args[3])
 		} else {
 			println("I will help you later, I promise")
 		}
-	case "init":
+	case "create":
 		if len(os.Args) == 3 {
-			initializeYear(os.Args[2])
+			createDirectory(os.Args[2])
 		} else {
 			println("I will help you later, I promise")
 		}
@@ -28,14 +30,16 @@ func main() {
 	}
 }
 
-func initializeYear(year string) {
+func initializeYear(year string, githubUser string) {
 	directoryName := "advent-of-code-" + year
 	err := os.Mkdir(directoryName, os.ModeDir|os.ModePerm)
 	if err != nil {
 		panic("failed to create directory " + directoryName)
 	}
 
-	createFile(fmt.Sprintf("%v/go.mod", directoryName), fmt.Sprintf("module github.com/gossie/adventofcode%v\n\ngo 1.19\n", year))
+	config.WriteConfig(map[string]string{"year": year, "githubUser": githubUser})
+
+	createFile(fmt.Sprintf("%v/go.mod", directoryName), fmt.Sprintf("module github.com/%v/adventofcode%v\n\ngo 1.19\n", githubUser, year))
 	createFile(fmt.Sprintf("%v/adventofcode.go", directoryName), "package main\n\nimport (\n    \"fmt\"\n    \"time\"\n)\n\nfunc main() {\n\n}\n")
 
 	fmt.Println("Created new project for the advent of code", year)
@@ -47,8 +51,11 @@ func createDirectory(name string) {
 		panic("failed to create directory " + name)
 	}
 
+	year := config.GetPropertyValue("year")
+	githubUser := config.GetPropertyValue("githubUser")
+
 	createFile(fmt.Sprintf("%v/%v.go", name, name), fmt.Sprintf("package %v\n\nfunc Part1(filename string) int {\n    return 0;\n}\n\nfunc Part2(filename string) int {\n    return 0;\n}\n", name))
-	createFile(fmt.Sprintf("%v/%v_test.go", name, name), fmt.Sprintf("package %v_test\n\nimport (\n    \"testing\"\n\n    \"github.com/gossie/adventofcode2023/%v\"\n)\n\nfunc TestPart1(t *testing.T) {\n    part1 := %v.Part1(\"%v_test.txt\")\n    if part1 != 0 {\n        t.Fatalf(\"part1 = %%v\", part1)\n    }\n}\n\nfunc TestPart2(t *testing.T) {\n    part2 := %v.Part2(\"%v_test.txt\")\n    if part2 != 0 {\n        t.Fatalf(\"part2 = %%v\", part2)\n    }\n}\n", name, name, name, name, name, name))
+	createFile(fmt.Sprintf("%v/%v_test.go", name, name), fmt.Sprintf("package %v_test\n\nimport (\n    \"testing\"\n\n    \"github.com/gossie/adventofcode%v/%v\"\n)\n\nfunc TestPart1(t *testing.T) {\n    part1 := %v.Part1(\"%v_test.txt\")\n    if part1 != 0 {\n        t.Fatalf(\"part1 = %%v\", part1)\n    }\n}\n\nfunc TestPart2(t *testing.T) {\n    part2 := %v.Part2(\"%v_test.txt\")\n    if part2 != 0 {\n        t.Fatalf(\"part2 = %%v\", part2)\n    }\n}\n", name, year, name, name, name, name, name))
 	createFile(fmt.Sprintf("%v/%v.txt", name, name), "")
 	createFile(fmt.Sprintf("%v/%v_test.txt", name, name), "")
 
@@ -92,7 +99,7 @@ func readMainFileContent() []string {
 	return lines
 }
 
-func ensureImport(cutMainFileContent []string, name string) []string {
+func ensureImport(cutMainFileContent []string, name, year, githubUser string) []string {
 	foundImportStart := false
 	var endOfImport int
 	for i, line := range cutMainFileContent {
@@ -105,7 +112,7 @@ func ensureImport(cutMainFileContent []string, name string) []string {
 			}
 		}
 	}
-	return append(append(append(make([]string, 0, len(cutMainFileContent)+1), cutMainFileContent[0:endOfImport]...), fmt.Sprintf("    \"github.com/gossie/adventofcode2023/%v\"", name)), cutMainFileContent[endOfImport:]...)
+	return append(append(append(make([]string, 0, len(cutMainFileContent)+1), cutMainFileContent[0:endOfImport]...), fmt.Sprintf("    \"github.com/%v/adventofcode%v/%v\"", githubUser, year, name)), cutMainFileContent[endOfImport:]...)
 }
 
 func writeMainFileContent(lines []string) {
