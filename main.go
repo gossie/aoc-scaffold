@@ -60,19 +60,16 @@ func createDirectory(name string) {
 	createFile(fmt.Sprintf("%v/%v_test.txt", name, name), "")
 
 	mainFileContent := readMainFileContent()
-	cutMainFileContent := append(make([]string, 0, len(mainFileContent)), mainFileContent[:len(mainFileContent)-2]...)
+	cutMainFileContent := append(make([]string, 0, len(mainFileContent)), mainFileContent[:len(mainFileContent)-1]...)
 	cutMainFileContent = append(cutMainFileContent, "\n")
 	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    fmt.Println(\"\\nPerforming tasks of %v\")", name))
 	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    start%vPart1 := time.Now().UnixMilli()", name))
-	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    %vPart1 := %v.Part1(\"%v/%v_test.txt\")", name, name, name, name))
+	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    %vPart1 := %v.Part1(\"%v/%v.txt\")", name, name, name, name))
 	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    fmt.Println(\"%v, task 1: \", %vPart1, \", took\", (time.Now().UnixMilli() - start%vPart1), \"ms\")", name, name, name))
-	cutMainFileContent = append(cutMainFileContent, "\n")
-	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    fmt.Println(\"\\nPerforming tasks of %v\")", name))
 	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    start%vPart2 := time.Now().UnixMilli()", name))
-	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    %vPart2 := %v.Part2(\"%v/%v_test.txt\")", name, name, name, name))
+	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    %vPart2 := %v.Part2(\"%v/%v.txt\")", name, name, name, name))
 	cutMainFileContent = append(cutMainFileContent, fmt.Sprintf("    fmt.Println(\"%v, task 2: \", %vPart2, \", took\", (time.Now().UnixMilli() - start%vPart2), \"ms\")", name, name, name))
 	cutMainFileContent = append(cutMainFileContent, "}")
-	cutMainFileContent = append(cutMainFileContent, "\n")
 
 	cutMainFileContent = ensureImport(cutMainFileContent, name, year, githubUser)
 
@@ -123,7 +120,11 @@ func writeMainFileContent(lines []string) {
 	defer file.Close()
 
 	for _, line := range lines {
-		_, err := file.WriteString(line + "\n")
+		toWrite := line
+		if toWrite != "\n" {
+			toWrite += "\n"
+		}
+		_, err := file.WriteString(toWrite)
 		if err != nil {
 			panic("failed writing into file: " + err.Error())
 		}
