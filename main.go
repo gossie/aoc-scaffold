@@ -74,7 +74,7 @@ func createDirectory(name string) {
 	cutMainFileContent = append(cutMainFileContent, "}")
 	cutMainFileContent = append(cutMainFileContent, "\n")
 
-	cutMainFileContent = ensureImport(cutMainFileContent, name)
+	cutMainFileContent = ensureImport(cutMainFileContent, name, year, githubUser)
 
 	writeMainFileContent(cutMainFileContent)
 

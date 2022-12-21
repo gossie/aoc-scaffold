@@ -8,7 +8,7 @@ import (
 )
 
 func WriteConfig(props map[string]string) {
-	err := os.Mkdir(".aoc", os.ModeDir|os.ModePerm)
+	err := os.Mkdir("advent-of-code-"+props["year"]+"/.aoc", os.ModeDir|os.ModePerm)
 	if err != nil {
 		panic("failed to create directory .aoc")
 	}
@@ -18,7 +18,7 @@ func WriteConfig(props map[string]string) {
 		content += fmt.Sprintf("%v=%v\n", k, v)
 	}
 
-	createFile(".aoc/config.properties", content)
+	createFile("advent-of-code-"+props["year"]+"/.aoc/config.properties", content)
 }
 
 func GetPropertyValue(key string) string {
