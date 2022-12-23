@@ -1,0 +1,21 @@
+package {{ .Package}}_test
+
+import (
+    "testing"
+
+    "github.com/{{ .GithubUser}}/adventofcode{{ .Year}}/{{ .Package}}"
+)
+
+func TestPart1(t *testing.T) {
+    part1 := {{ .Package}}.Part1("{{ .Package}}_test.txt")
+    if part1 != 0 {
+        t.Fatalf("part1 = %v", part1)
+    }
+}
+
+func TestPart2(t *testing.T) {
+    part2 := {{ .Package}}.Part2("{{ .Package}}_test.txt")
+    if part2 != 0 {
+        t.Fatalf("part2 = %v", part2)
+    }
+}

@@ -1,0 +1,3 @@
+module github.com/{{ .GithubUser}}/adventofcode{{ .Year}}
+
+go 1.19

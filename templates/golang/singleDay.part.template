@@ -1,0 +1,7 @@
+    fmt.Println("\nPerforming tasks of {{ .Package}}")
+    start{{ .Package}}Part1 := time.Now().UnixMilli()
+    {{ .Package}}Part1 := {{ .Package}}.Part1("{{ .Package}}/{{ .Package}}.txt")
+    fmt.Println("{{ .Package}}, task 1: ", {{ .Package}}Part1, ", took", (time.Now().UnixMilli() - start{{ .Package}}Part1), "ms")
+    start{{ .Package}}Part2 := time.Now().UnixMilli()
+    {{ .Package}}Part2 := {{ .Package}}.Part2("{{ .Package}}/{{ .Package}}.txt")
+    fmt.Println("{{ .Package}}, task 2: ", {{ .Package}}Part2, ", took", (time.Now().UnixMilli() - start{{ .Package}}Part2), "ms")
