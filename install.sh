@@ -1,2 +1,2 @@
 go install
-mv /home/schreck/go/bin/aoc-generator /home/schreck/go/bin/aoc
+mv <path-to-go-install-bin>/aoc-generator <path-to-go-install-bin>/aoc
