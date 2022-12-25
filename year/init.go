@@ -8,7 +8,7 @@ import (
 	"github.com/gossie/aoc-generator/year/golang"
 )
 
-var initializer = map[string]func(string, int, string, string){
+var initializer = map[string]func(string, int, string){
 	"go": golang.InitializeYear,
 }
 
@@ -21,7 +21,7 @@ func InitializeYear(year int, language, githubUser string) {
 
 	config.WriteConfig(map[string]string{"year": fmt.Sprintf("%d", year), "language": language, "githubUser": githubUser})
 
-	initializer[language](directoryName, year, language, githubUser)
+	initializer[language](directoryName, year, githubUser)
 
 	fmt.Println("Created new project for the advent of code", year)
 }
