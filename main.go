@@ -43,7 +43,7 @@ func handleGenerate(generateCmd *flag.FlagSet, aocYear *int, language, githubUse
 
 func handleCreateDay(createDayCmd *flag.FlagSet, aocDay *int) {
 	createDayCmd.Parse(os.Args[2:])
-	day.CreateDay(fmt.Sprintf("day%d", *aocDay))
+	day.CreateDay(*aocDay)
 }
 
 func printHelp(commands []*flag.FlagSet) {

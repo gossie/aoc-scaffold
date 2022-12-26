@@ -3,7 +3,7 @@ package golang
 import (
 	"bytes"
 	"fmt"
-	"html/template"
+	"text/template"
 
 	"github.com/gossie/aoc-generator/templates/golang"
 	"github.com/gossie/aoc-generator/util"

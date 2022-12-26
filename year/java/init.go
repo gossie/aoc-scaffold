@@ -3,7 +3,7 @@ package java
 import (
 	"bytes"
 	"fmt"
-	"html/template"
+	"text/template"
 
 	"github.com/gossie/aoc-generator/templates/java"
 	"github.com/gossie/aoc-generator/util"
@@ -22,8 +22,20 @@ func InitializeYear(directoryName string, year int, githubUser string) {
 		panic("template could not be parsed")
 	}
 
+	util.CreateDirectory(fmt.Sprintf("%v/src", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/main", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/main/resources", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/main/resources/adventofcode", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/main/java", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/main/java/adventofcode", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/test", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/test/resources", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/test/resources/adventofcode", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/test/java", directoryName))
+	util.CreateDirectory(fmt.Sprintf("%v/src/test/java/adventofcode", directoryName))
+
 	pomBuffer := new(bytes.Buffer)
 	pomT.Execute(pomBuffer, fileData)
 	util.CreateFile(fmt.Sprintf("%v/pom.xml", directoryName), pomBuffer.String())
-	//util.CreateFile(fmt.Sprintf("%v/adventofcode.go", directoryName), golang.AdventOfCodeTemplate)
+	util.CreateFile(fmt.Sprintf("%v/src/main/java/adventofcode/AdventOfCode.java", directoryName), java.AdventOfCodeTemplate)
 }

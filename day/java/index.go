@@ -1,55 +1,57 @@
-package golang
+package java
 
 import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"html/template"
 	"os"
-	"text/template"
 
 	"github.com/gossie/aoc-generator/config"
-	"github.com/gossie/aoc-generator/templates/golang"
+	"github.com/gossie/aoc-generator/templates/java"
 	"github.com/gossie/aoc-generator/util"
 )
 
 type fileData struct {
-	Package    string
+	Day        int
 	Year       string
 	GithubUser string
 }
 
 func CreateDay(day int) {
-	directoryName := fmt.Sprintf("day%d", day)
-	util.CreateDirectory(directoryName)
-
 	dayPackage := fmt.Sprintf("day%d", day)
 	year := config.GetPropertyValue("year")
 	githubUser := config.GetPropertyValue("githubUser")
 
-	fileData := fileData{dayPackage, year, githubUser}
+	util.CreateDirectory(fmt.Sprintf("src/main/java/adventofcode/%v", dayPackage))
+	util.CreateDirectory(fmt.Sprintf("src/test/java/adventofcode/%v", dayPackage))
+	util.CreateDirectory(fmt.Sprintf("src/main/resources/adventofcode/%v", dayPackage))
+	util.CreateDirectory(fmt.Sprintf("src/test/resources/adventofcode/%v", dayPackage))
 
-	dayT, err := template.New("day").Parse(golang.DayTemplate)
+	fileData := fileData{day, year, githubUser}
+
+	dayT, err := template.New("day").Parse(java.DayTemplate)
 	if err != nil {
 		panic("template could not be parsed: " + err.Error())
 	}
 
 	dayBuffer := new(bytes.Buffer)
 	dayT.Execute(dayBuffer, fileData)
-	util.CreateFile(fmt.Sprintf("%v/%v.go", dayPackage, dayPackage), dayBuffer.String())
+	util.CreateFile(fmt.Sprintf("src/main/java/adventofcode/%v/Day%d.java", dayPackage, day), dayBuffer.String())
 
-	dayTestT, err := template.New("dayTest").Parse(golang.DayTestTemplate)
+	dayTestT, err := template.New("dayTest").Parse(java.DayTestTemplate)
 	if err != nil {
 		panic("template could not be parsed: " + err.Error())
 	}
 
 	dayTestBuffer := new(bytes.Buffer)
 	dayTestT.Execute(dayTestBuffer, fileData)
-	util.CreateFile(fmt.Sprintf("%v/%v_test.go", dayPackage, dayPackage), dayTestBuffer.String())
+	util.CreateFile(fmt.Sprintf("src/test/java/adventofcode/%v/Day%dTest.java", dayPackage, day), dayTestBuffer.String())
 
-	util.CreateFile(fmt.Sprintf("%v/%v.txt", dayPackage, dayPackage), "")
-	util.CreateFile(fmt.Sprintf("%v/%v_test.txt", dayPackage, dayPackage), "")
+	util.CreateFile(fmt.Sprintf("src/main/resources/adventofcode/%v/%v.txt", dayPackage, dayPackage), "")
+	util.CreateFile(fmt.Sprintf("src/test/resources/adventofcode/%v/%v.txt", dayPackage, dayPackage), "")
 
-	aocDayT, err := template.New("aocDayT").Parse(golang.SingleDayInAdventOfCodeTemplate)
+	aocDayT, err := template.New("aocDayT").Parse(java.SingleDayInAdventOfCodeTemplate)
 	if err != nil {
 		panic("template could not be parsed")
 	}
@@ -59,12 +61,11 @@ func CreateDay(day int) {
 	content := aocDayTBuffer.String()
 
 	mainFileContent := readMainFileContent()
-	cutMainFileContent := append(make([]string, 0, len(mainFileContent)), mainFileContent[:len(mainFileContent)-1]...)
+	cutMainFileContent := append(make([]string, 0, len(mainFileContent)), mainFileContent[:len(mainFileContent)-3]...)
 	cutMainFileContent = append(cutMainFileContent, "\n")
 	cutMainFileContent = append(cutMainFileContent, content)
+	cutMainFileContent = append(cutMainFileContent, "    }")
 	cutMainFileContent = append(cutMainFileContent, "}")
-
-	cutMainFileContent = ensureImport(cutMainFileContent, dayPackage, year, githubUser)
 
 	writeMainFileContent(cutMainFileContent)
 
@@ -72,7 +73,7 @@ func CreateDay(day int) {
 }
 
 func readMainFileContent() []string {
-	file, err := os.Open("adventofcode.go")
+	file, err := os.Open("src/main/java/adventofcode/AdventOfCode.java")
 	if err != nil {
 		panic("failed opening file")
 	}
@@ -89,24 +90,8 @@ func readMainFileContent() []string {
 	return lines
 }
 
-func ensureImport(cutMainFileContent []string, name, year, githubUser string) []string {
-	foundImportStart := false
-	var endOfImport int
-	for i, line := range cutMainFileContent {
-		if line == "import (" {
-			foundImportStart = true
-		}
-		if foundImportStart {
-			if line == ")" {
-				endOfImport = i
-			}
-		}
-	}
-	return append(append(append(make([]string, 0, len(cutMainFileContent)+1), cutMainFileContent[0:endOfImport]...), fmt.Sprintf("    \"github.com/%v/adventofcode%v/%v\"", githubUser, year, name)), cutMainFileContent[endOfImport:]...)
-}
-
 func writeMainFileContent(lines []string) {
-	file, err := os.OpenFile("adventofcode.go", os.O_RDWR, 0)
+	file, err := os.OpenFile("src/main/java/adventofcode/AdventOfCode.java", os.O_RDWR, 0)
 	if err != nil {
 		panic("failed opening file")
 	}
