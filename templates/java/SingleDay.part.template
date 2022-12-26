@@ -1,0 +1,7 @@
+        System.out.println("\nPerforming tasks of Day {{ .Day}}");
+        var startDay{{ .Day}}Part1 = System.currentTimeMillis();
+        var day{{ .Day}}Part1 = adventofcode.day{{ .Day}}.Day{{ .Day}}.part1("TODO");
+        System.out.println("Day {{ .Day}}, task 1: " + day{{ .Day}}Part1 + ", took" + (System.currentTimeMillis() - startDay{{ .Day}}Part1) + "ms");
+        var startDay{{ .Day}}Part2 = System.currentTimeMillis();
+        var day{{ .Day}}Part2 = adventofcode.day{{ .Day}}.Day{{ .Day}}.part2("TODO");
+        System.out.println("Day {{ .Day}}, task 2: " + day{{ .Day}}Part2 + ", took" + (System.currentTimeMillis() - startDay{{ .Day}}Part2) + "ms");

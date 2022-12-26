@@ -3,7 +3,7 @@ package golang
 import (
 	"bytes"
 	"fmt"
-	"html/template"
+	"text/template"
 
 	"github.com/gossie/aoc-generator/templates/golang"
 	"github.com/gossie/aoc-generator/util"
@@ -14,7 +14,7 @@ type fileData struct {
 	Year       int
 }
 
-func InitializeYear(directoryName string, year int, language, githubUser string) {
+func InitializeYear(directoryName string, year int, githubUser string) {
 	fileData := fileData{githubUser, year}
 
 	goModT, err := template.New("goMod").Parse(golang.GoModTemplate)

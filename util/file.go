@@ -4,6 +4,13 @@ import (
 	"os"
 )
 
+func CreateDirectory(directoryName string) {
+	err := os.Mkdir(directoryName, os.ModeDir|os.ModePerm)
+	if err != nil {
+		panic("failed to create directory " + directoryName)
+	}
+}
+
 func CreateFile(name, content string) {
 	testInput, err := os.Create(name)
 	if err != nil {

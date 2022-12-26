@@ -1,0 +1,13 @@
+package adventofcode.day{{ .Day}};
+
+public class Day{{ .Day}} {
+
+    public static int part1(String filename) {
+        return 0;
+    }
+    
+    public static int part2(String filename) {
+        return 0;
+    }
+
+}

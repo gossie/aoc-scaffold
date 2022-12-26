@@ -1,22 +1,17 @@
 package day
 
 import (
-	"os"
-
 	"github.com/gossie/aoc-generator/config"
 	"github.com/gossie/aoc-generator/day/golang"
+	"github.com/gossie/aoc-generator/day/java"
 )
 
-var initializer = map[string]func(string){
-	"go": golang.CreateDay,
+var initializer = map[string]func(int){
+	"go":   golang.CreateDay,
+	"java": java.CreateDay,
 }
 
-func CreateDay(name string) {
-	err := os.Mkdir(name, os.ModeDir|os.ModePerm)
-	if err != nil {
-		panic("failed to create directory " + name)
-	}
-
+func CreateDay(aocDay int) {
 	language := config.GetPropertyValue("language")
-	initializer[language](name)
+	initializer[language](aocDay)
 }
