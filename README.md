@@ -3,7 +3,8 @@ A simple CLI that lets you create scaffolds for advent of code projects and sing
 
 ## Installation
 
-If you habe go installed on your system you could clone the GitHub repository, adjust the path in the install.sh and then execute the install.sh.
+If you have go installed on your system you could clone the GitHub repository, adjust the path in the install.sh and then execute the install.sh.
+Other ways will be available shortly.
 
 ## Usage
 
