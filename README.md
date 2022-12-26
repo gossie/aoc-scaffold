@@ -10,9 +10,9 @@ If you habe go installed on your system you could clone the GitHub repository, a
 ### aoc generate
 
 To create a new aoc project use the `aoc generate` command and pass the following arguments:
-* **language**: The prgramming language you want to use (currently only go is supported, but more are to come)
+* **language**: The prgramming language you want to use (currently go and java are supported)
 * **year**: The year your are implementing the tasks for
-* **githubUser**: This is used for the module in the generated go.mod file
+* **githubUser**: This is used for the module in the generated go.mod file or the groupId in the pom.xml
 
 This command will create a new directory, that contains your project.
 
