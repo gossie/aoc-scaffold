@@ -8,12 +8,12 @@ class Day{{ .Day}}Test {
 
     @Test
     void testPart1() {
-        assertEquals(0, Day{{ .Day}}.part1("day{{ .Day}}_test.txt"));
+        assertEquals(0, Day{{ .Day}}.part1(getClass().getResourceAsStream("day{{ .Day}}.txt")));
     }
 
     @Test
     void testPart2() {
-        assertEquals(0, Day{{ .Day}}.part2("day{{ .Day}}_test.txt"));
+        assertEquals(0, Day{{ .Day}}.part2(getClass().getResourceAsStream("day{{ .Day}}.txt")));
     }
 
 }

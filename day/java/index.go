@@ -61,7 +61,7 @@ func CreateDay(day int) {
 	content := aocDayTBuffer.String()
 
 	mainFileContent := readMainFileContent()
-	cutMainFileContent := append(make([]string, 0, len(mainFileContent)), mainFileContent[:len(mainFileContent)-3]...)
+	cutMainFileContent := append(make([]string, 0, len(mainFileContent)), mainFileContent[:len(mainFileContent)-2]...)
 	cutMainFileContent = append(cutMainFileContent, "\n")
 	cutMainFileContent = append(cutMainFileContent, content)
 	cutMainFileContent = append(cutMainFileContent, "    }")

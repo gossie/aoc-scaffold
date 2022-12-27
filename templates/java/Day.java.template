@@ -1,12 +1,16 @@
 package adventofcode.day{{ .Day}};
 
+import java.io.InputStream;
+
 public class Day{{ .Day}} {
 
-    public static int part1(String filename) {
+    public static int part1(InputStream in) {
+        // TODO: your solution for part 1
         return 0;
     }
     
-    public static int part2(String filename) {
+    public static int part2(InputStream in) {
+        // TODO: your solution for part 2
         return 0;
     }
 
